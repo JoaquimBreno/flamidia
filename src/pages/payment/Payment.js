@@ -10,7 +10,7 @@ class Payment extends Component {
   render() {
     return (
       <div>
-        <h1 color='white'>Payment</h1>
+        <h1 className='label'>Payment</h1>
       </div>
     );
   }

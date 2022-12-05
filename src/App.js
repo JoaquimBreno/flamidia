@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Routes} from 'react-router-dom';
-import Form  from './pages/form/Form';
+import Form from './pages/form/Form';
 import Payment from './pages/payment/Payment';
 import './App.css';
 import PrivateRoute from "./pages/PrivateRoute";

@@ -165,7 +165,7 @@ class Form extends Component {
                   {this.getSession() === "undefined" ? "Escolhe a datinha": this.getSession()} 
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  {this.state.sessionDateReg.map((session) => (
+                  {this.session.filter(ses => Number(ses.id_filme) === Number(this.state.movieReg)).map((session) => (
                       <Dropdown.Item eventKey={session.data} key={session.id} >{session.data}</Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
@@ -175,8 +175,8 @@ class Form extends Component {
         :
           <div hidden></div>
         }
-{/* 
-        {this.state.sessionDateReg!=="undefined"?
+
+        {this.state.date!=="undefined"?
           <Row className='justify-content-center mt-5 text-center'>
             <Col md="2" className='align-self-center label'>
                 horinha?
@@ -197,7 +197,7 @@ class Form extends Component {
         :
           <div hidden></div>
         }
-
+{/* 
         {this.state.sessionHourReg!=="undefined"?
           <Row className='justify-content-center mt-5 text-center'>
             <Col md="2" className='align-self-center label'>

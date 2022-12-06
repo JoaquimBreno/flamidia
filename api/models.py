@@ -12,3 +12,11 @@ class Cliente(Base):
     estudante = Column(Boolean)
     flamengo = Column(Boolean)
     idade = Column(Integer)
+
+class Filme(Base):
+    __tablename__ = 'filme'
+    id_filme = Column(Integer, primary_key=True, index=True)
+    categoria = Column(String)
+    produtora = Column(String)
+    atores = Column(String)
+    nacionalidade = Column(String)

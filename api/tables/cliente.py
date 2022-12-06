@@ -6,7 +6,10 @@ from schema import ClienteSchema, Response, RequestCliente
 
 import crud
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/cliente", 
+    tags=["cliente"]
+)
 
 
 def get_db():

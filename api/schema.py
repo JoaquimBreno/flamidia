@@ -16,6 +16,18 @@ class ClienteSchema(BaseModel):
 class RequestCliente(BaseModel):
     parameter: ClienteSchema = Field(...)
 
+
+class FilmeSchema(BaseModel):
+    __tablename__ = 'filme'
+    id_filme = int
+    categoria = str
+    produtora = str
+    atores = str
+    nacionalidade = str
+
+class RequestFilme(BaseModel):
+    parameter: FilmeSchema = Field(...)
+
 class Response(GenericModel, Generic[T]):
     code:str
     status: str

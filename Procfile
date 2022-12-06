@@ -1,1 +1,1 @@
-web: gunicorn -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT api.main:app
+web: uvicorn api.main:app --reload --host=0.0.0.0:$PORT 

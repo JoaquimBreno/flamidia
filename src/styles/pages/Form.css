@@ -41,3 +41,11 @@ footer.fixar-rodape{
 .label{
     color: #999999;
 }
+
+.label_filme{
+    color: white;
+}
+
+.invisible{
+    display: none;
+}

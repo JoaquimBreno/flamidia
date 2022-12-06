@@ -224,7 +224,7 @@ class Form extends Component {
             <Col md='auto'>
               <Dropdown onSelect= {this.handleDate}>
                 <Dropdown.Toggle id="dropdown-basic" title="Dropdown button">
-                  {this.getDate() === "undefined" ? "Escolhe a datinha vagabunda": this.getDate()} 
+                  {this.getDate() === "undefined" ? "Escolhe a datinha": this.getDate()} 
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {this.session.filter(ses => Number(ses.id_filme) === Number(this.state.movieReg)).map((session) => (
@@ -247,7 +247,7 @@ class Form extends Component {
             <Col md='auto'>
               <Dropdown onSelect= {this.handleHour}>
                 <Dropdown.Toggle id="dropdown-basic" title="Dropdown button">
-                  {this.getHour() === "undefined" ? "Escolhe a horinha piranha": this.getHour()} 
+                  {this.getHour() === "undefined" ? "Escolhe a horinha": this.getHour()} 
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {this.session.filter(ses => ses.data === this.state.date).map((session) => (
@@ -270,7 +270,7 @@ class Form extends Component {
             <Col md='auto'>
               <Dropdown onSelect= {this.handleRoom}>
                 <Dropdown.Toggle id="dropdown-basic" title="Dropdown button">
-                  {this.getRoom() === "undefined" ? "Escolhe a salinha vaca": this.getRoom()} 
+                  {this.getRoom() === "undefined" ? "Escolhe a salinha": this.getRoom()} 
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {this.session.filter(ses => ses.horario === this.state.hour).map((session) => (
@@ -293,7 +293,7 @@ class Form extends Component {
             <Col md='auto'>
               <Dropdown onSelect= {this.handleChair}>
                 <Dropdown.Toggle id="dropdown-basic" title="Dropdown button">
-                  {this.getChair() === "undefined" ? "Escolhe a cadeirinha amiguinha": this.getChair()} 
+                  {this.getChair() === "undefined" ? "Escolhe a cadeirinha": this.getChair()} 
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {this.cadeira.filter(cad => Number(cad.id_sala) === Number(this.state.room)).map((cadeira) => (
@@ -316,7 +316,7 @@ class Form extends Component {
             <Col md='auto'>
               <Dropdown onSelect= {this.handleLanche} >
                 <Dropdown.Toggle id="dropdown-basic" title="Dropdown button">
-                  {this.getLanche() === "undefined"? "Escolha o lanchinho irmã": this.lancheFounder()} 
+                  {this.getLanche() === "undefined"? "Escolha o lanchinho": this.lancheFounder()} 
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {this.lanchinho.map((lanchinho) => (

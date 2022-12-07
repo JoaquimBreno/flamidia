@@ -15,8 +15,19 @@ class Cliente(Base):
 
 class Filme(Base):
     __tablename__ = 'filme'
-    id_filme = Column(Integer, primary_key=True, index=True)
+    id_filme = Column(Integer, primary_key=True, index=True, autoincrement=True)
     categoria = Column(String)
     produtora = Column(String)
     atores = Column(String)
     nacionalidade = Column(String)
+    faixa_etaria = Column(Integer)
+
+class Ingresso(Base):
+    __tablename__ = 'ingresso'
+    id_ingresso = Column(Integer, primary_key=True, index=True)
+    id_sessao = Column(Integer)
+    id_compra = Column(Integer)
+    id_cadeira = Column(Integer)
+    quantidade = Column(Integer)
+    preco : Column(Float)
+

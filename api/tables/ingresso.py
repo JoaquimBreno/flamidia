@@ -26,7 +26,7 @@ async def get_ingresso(skip: int = 0, limit: int = 100, db: Session = Depends(ge
 
 @router.post("/create")
 async def create_ingresso_service(request: RequestIngresso, db: Session = Depends(get_db)):
-    crud.create_ingresso(db, Ingresso=request.parameter)
+    crud.create_ingresso(db, ingresso=request.parameter)
     return Response(status="Ok",
                     code="200",
                     message="Ingresso created successfully").dict(exclude_none=True)

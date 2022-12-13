@@ -27,8 +27,17 @@ def get_cadeira_by_id_sala(db: Session, id_sala: int, skipt: int = 0, limit: int
     return db.query(Cadeira).filter(Cadeira.id_sala == id_sala).all()
 
 ############ SESSAO ############
-def get_sessao_by_id_filme(db: Session, id_filme: int):
+def get_sessao_by_id_filme(db: Session, id_filme: int, skipt: int = 0, limit: int = 100):
     return db.query(Sessao).filter(Sessao.id_filme == id_filme).all()
+
+def create_sessao(db: Session, sessao: SessaoSchema):
+    _sessao = Sessao(
+        **sessao.dict()
+    )
+    db.add(_sessao)
+    db.commit()
+    db.refresh(_sessao)
+    return _sessao
 
 ############ FILME ############
 def get_filme(db: Session, skipt: int = 0, limit: int = 100):

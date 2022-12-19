@@ -76,8 +76,8 @@ class SessaoSchema(BaseModel):
     id_filme : Optional[int] = None
     id_sala : Optional[int] = None
     data : Optional[str] = None
-    horario_inicio : Optional[str] = None
-    horario_fim : Optional[str] = None
+    hora_inicio : Optional[str] = None
+    hora_fim : Optional[str] = None
 
     class Config:
         orm_mode = True

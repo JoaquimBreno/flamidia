@@ -9,6 +9,7 @@ class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      movies: [],
       isLogin: isLogin(),
       movieReg: "undefined",
       lancheReg:"undefined",
@@ -142,13 +143,31 @@ class Form extends Component {
     return movieFound;
   }
 
+  /**
+   * API SERVICES
+   * 
+   */
 
-  movies = [
+  mountMovies(){
+    ApiService.getMovie()
+      .then(res => {
+        const movies = res.data;
+        console.log(movies);
+        this.movies = movies;
+      })
+  }
+
+  /**
+   * 
+   * 
+   */
+  movies = []
+  /**movies = [
     
-    { label: "Crepusculo1", id: 1, ator: "Robert Pattinson", ano: 2008, genero: "Romance", nacionalidade: "EUA", idade:"18"},
-    { label: "Crepusculo2", id: 2, ator: "Robert Pattinson2", ano: 20082, genero: "Romance2", nacionalidade: "EUA", idade:"18"},
-    { label: "Crepusculo3", id: 3, ator: "Robert Pattinson3", ano: 20083, genero: "Romance3", nacionalidade: "EUA" , idade:"18"}
-  ]
+     { label: "Crepusculo1", id: 1, ator: "Robert Pattinson", ano: 2008, genero: "Romance", nacionalidade: "EUA", idade:"18"},
+     { label: "Crepusculo2", id: 2, ator: "Robert Pattinson2", ano: 20082, genero: "Romance2", nacionalidade: "EUA", idade:"18"},
+     { label: "Crepusculo3", id: 3, ator: "Robert Pattinson3", ano: 20083, genero: "Romance3", nacionalidade: "EUA" , idade:"18"}
+   ]**/
 
   session = [
     
@@ -174,6 +193,7 @@ class Form extends Component {
   ]
 
   render() {
+    this.mountMovies();
     let results;
     if (this.getMovie()==="undefined") {
       results =         

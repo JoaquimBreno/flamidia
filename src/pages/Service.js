@@ -1,7 +1,7 @@
 const ApiService = {
-    async get(endpoint) {
+    async getMovie() {
         try {
-          const response = await fetch(`https://minha-api.com${endpoint}`)
+          const response = await fetch(`https://flaapimidia.herokuapp.com/filme/`)
           return await response.json()
         } catch (error) {
           console.error(error)

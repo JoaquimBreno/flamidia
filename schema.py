@@ -26,6 +26,8 @@ class FilmeSchema(BaseModel):
     atores : Optional[str] = None
     nacionalidade: Optional[str] = None
     faixa_etaria: Optional[str] = None
+    nome_filme: Optional[str] = None
+    img_filme: Optional[str] = None
 
     class Config:
         orm_mode = True
@@ -39,7 +41,6 @@ class IngressoSchema(BaseModel):
     id_sessao : Optional[int] = None
     id_compra : Optional[int] = None
     id_cadeira : Optional[int] = None
-    quantidade : Optional[int] = None
     preco : Optional[float] = None
 
     class Config:
@@ -90,6 +91,7 @@ class CompraSchema(BaseModel):
     id_compra : Optional[int] = None
     id_cliente : Optional[int] = None
     forma_de_pagamento : Optional[int] = None
+    quantidade : Optional[int] = None
     class Config:
         orm_mode = True
 

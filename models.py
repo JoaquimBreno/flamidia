@@ -22,6 +22,8 @@ class Filme(Base):
     atores = Column(String)
     nacionalidade = Column(String)
     faixa_etaria = Column(Integer)
+    nome_filme = Column(String)
+    img_filme = Column(String)
 
 class Sessao(Base):
     __tablename__ = 'sessao'
@@ -64,6 +66,7 @@ class Compra(Base):
     id_compra = Column(Integer, primary_key=True, index=True, autoincrement=True)
     id_cliente = Column(Integer, ForeignKey('cliente.id_cliente'))
     forma_de_pagamento = Column(Integer)
+    quantidade=Column(Integer)
     cliente=relationship("Cliente", foreign_keys=[id_cliente], back_populates="compra")
     ingresso=relationship("Ingresso", back_populates="compra")
     pedidos=relationship("Pedido", back_populates="compra")

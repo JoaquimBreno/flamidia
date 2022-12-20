@@ -53,11 +53,10 @@ class PaymentComponent extends Component {
   }
 
   mountClientes(cliente) {
-    const body = {
-      "parameters":{}
-    }
-    body.parameters=cliente
-    axios.post(body,'https://flaapimidia.herokuapp.com/cliente/create')
+    const body = {}
+    body.parameter=cliente
+    console.log(body)
+    axios.post(body,'https://flaapimidia.herokuapp.com/cliente/create/')
     .then(response => {
       console.log(response.data.result);
     })
@@ -90,7 +89,7 @@ class PaymentComponent extends Component {
             setSubmitting(false);
             
             this.setState({cliente: values});
-            
+            this.mountClientes(values)
             // aqui você pode enviar os valores do formulário para a API ou fazer qualquer outra coisa
             // this.handleLogin()
           }}

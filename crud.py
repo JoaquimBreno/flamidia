@@ -9,6 +9,15 @@ def get_cliente(db: Session, skipt: int = 0, limit: int = 100):
 def get_cliente_by_id(db: Session, Cliente_id: int):
     return db.query(Cliente).filter(Cliente.id_cliente == Cliente_id).first()
 
+def create_cliente(db: Session, cliente: ClienteSchema):
+    _cliente = cliente(
+        **cliente.dict()
+    )
+    db.add(_cliente)
+    db.commit()
+    db.refresh(_cliente)
+    return _cliente
+
 ############ INGRESSO ############
 def get_ingresso(db: Session, skipt: int = 0, limit: int = 100):
     return db.query(Ingresso).offset(skipt).limit(limit).all()

@@ -10,6 +10,7 @@ class Form extends Component {
     super(props);
     this.state = {
       movies: [],
+      session: [],
       isLogin: isLogin(),
       movieReg: "undefined",
       lancheReg:"undefined",
@@ -25,6 +26,7 @@ class Form extends Component {
     this.handleMovies = this.handleMovies.bind(this);
     this.handleDate = this.handleDate.bind(this);
     this.getDate = this.getDate.bind(this);
+    this.getSession = this.getSession.bind(this);
     this.saveState = this.saveState.bind(this);
   }
 
@@ -38,7 +40,7 @@ class Form extends Component {
 
   handleMovies = (e) => {
     // find dictionary into movies with id = e and return the id
-    console.log(e)
+    this.mountSessao(e);
     this.setState((prevState) => ({ 
       ...prevState,
         movieReg: this.state.movies.find((movie) => Number(movie.id_filme) === Number(e)).id_filme, 
@@ -128,6 +130,10 @@ class Form extends Component {
     return this.state.movieReg;
   }
 
+  getSession = () => {
+    return this.state.session;
+  }
+
   getLanche = () => {
     return this.state.lancheReg;
   }
@@ -151,6 +157,7 @@ class Form extends Component {
 
   componentDidMount() {
     this.mountMovies();
+    this.mountSessao();
   }
 
   mountMovies() {
@@ -164,11 +171,23 @@ class Form extends Component {
     });
   }
 
-  mountSessao() {
-    axios.get('https://flaapimidia.herokuapp.com/filme/')
+  mountSessao(){
+    axios.get('https://flaapimidia.herokuapp.com/sessao/')
     .then(response => {
       console.log(response.data.result);
-      this.setState({ movies: response.data.result });
+      this.setState({ session: response.data.result });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
+
+  mountSessaoById(idFilme) {
+    console.log(idFilme);
+    axios.get('https://flaapimidia.herokuapp.com/sessao/id/sessao/'+idFilme)
+    .then(response => {
+      console.log(response.data.result);
+      this.setState({ session: response.data.result });
     })
     .catch(error => {
       console.error(error);
@@ -186,13 +205,13 @@ class Form extends Component {
      { label: "Crepusculo3", id: 3, ator: "Robert Pattinson3", ano: 20083, genero: "Romance3", nacionalidade: "EUA" , idade:"18"}
    ]**/
 
-  session = [
+  // session = [
     
-    { id: 10,id_filme: 1, horario: "14:00", data: "2021-05-01", id_sala: "1"},
-    { id: 20,id_filme: 2, horario: "15:00", data: "2021-05-02", id_sala: "2"},
-    { id: 30,id_filme: 3, horario: "16:00", data: "2021-05-03", id_sala: "3"},
-    { id: 30,id_filme: 96, horario: "16:00", data: "2021-05-03", id_sala: "4"},
-  ]
+  //   { id: 10,id_filme: 1, horario: "14:00", data: "2021-05-01", id_sala: "1"},
+  //   { id: 20,id_filme: 2, horario: "15:00", data: "2021-05-02", id_sala: "2"},
+  //   { id: 30,id_filme: 3, horario: "16:00", data: "2021-05-03", id_sala: "3"},
+  //   { id: 30,id_filme: 96, horario: "16:00", data: "2021-05-03", id_sala: "4"},
+  // ]
 
   cadeira = [
     
@@ -210,7 +229,6 @@ class Form extends Component {
   ]
 
   render() {
-
     let results;
     if (this.getMovie()==="undefined") {
       results =         
@@ -244,7 +262,9 @@ class Form extends Component {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {this.state.movies.map((movie) => (
-                    <Dropdown.Item eventKey={movie.id_filme} key={movie.id_filme} >{movie.nome_filme}</Dropdown.Item>
+                  movie.nome_filme !== null?
+                    <Dropdown.Item eventKey={movie.id_filme} key={movie.id_filme} >{movie.nome_filme}</Dropdown.Item>:
+                    null
                 ))}
               </Dropdown.Menu>
             </Dropdown>
@@ -254,7 +274,7 @@ class Form extends Component {
         {results}
        
         {/* DATINHA */} 
-        {this.getMovie()!=="undefined"?
+        {this.state.session.length?
           <Row className='justify-content-center mt-5 text-center'>
             <Col md="2" className='align-self-center label'>
                 datinha?
@@ -265,19 +285,19 @@ class Form extends Component {
                   {this.getDate() === "undefined" ? "Escolhe a datinha": this.getDate()} 
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  {this.session.filter(ses => Number(ses.id_filme) === Number(this.state.movieReg)).map((session) => (
-                      <Dropdown.Item eventKey={session.data} key={session.id} >{session.data}</Dropdown.Item>
+                  {this.state.session.filter(ses => Number(ses.id_filme) === Number(this.state.movieReg)).map((session) => (
+                      <Dropdown.Item eventKey={session.data} key={session.id_sessao} >{session.data}</Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
             </Col>
           </Row>       
         :
-          <div hidden></div>
+          null
         }
 
-        {/* HORINHA */} 
-        {this.state.date!=="undefined"?
+        {/* HORINHA 
+        {this.state.date!=="undefined"? 
           <Row className='justify-content-center mt-5 text-center'>
             <Col md="2" className='align-self-center label'>
                 horinha?
@@ -297,10 +317,10 @@ class Form extends Component {
           </Row>       
         :
           <div hidden></div>
-        }
+        } */}
 
         {/* SALINHA */}
-        {this.state.hour!=="undefined"?
+        {/* {this.state.hour!=="undefined"?
           <Row className='justify-content-center mt-5 text-center'>
             <Col md="2" className='align-self-center label'>
                 salinha?
@@ -320,10 +340,10 @@ class Form extends Component {
           </Row>       
         :
           <div hidden></div>
-        }
+        } */}
 
         {/* CADEIRINHA */}
-        {this.state.room!=="undefined"?
+        {/* {this.state.room!=="undefined"?
           <Row className='justify-content-center mt-5 text-center'>
             <Col md="2" className='align-self-center label'>
                 cadeirinha?
@@ -343,10 +363,10 @@ class Form extends Component {
           </Row>       
         :
           <div hidden></div>
-        }
+        } */}
 
         {/* LANCHINHO */} 
-        {this.state.chair!=="undefined"?
+        {/* {this.state.chair!=="undefined"?
           <Row className='justify-content-center mt-5 text-center'>
             <Col md="2" className='align-self-center label'>
                 lanchinho?
@@ -366,7 +386,7 @@ class Form extends Component {
           </Row>
         :
         <div hidden></div>
-        }
+        } */}
 
 
       </div>

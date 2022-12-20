@@ -7,6 +7,7 @@ import axios from 'axios';
 class Form extends Component {
   constructor(props) {
     super(props);
+    logout();
     this.state = {
       movies: [],
       session: [],
@@ -28,6 +29,7 @@ class Form extends Component {
     this.getDate = this.getDate.bind(this);
     this.getSession = this.getSession.bind(this);
     this.saveState = this.saveState.bind(this);
+    
   }
 
   saveState(state) {
@@ -225,14 +227,14 @@ class Form extends Component {
   //   { id: 30,id_filme: 96, horario: "16:00", data: "2021-05-03", id_sala: "4"},
   // ]
 
-  cadeira = [
+  // cadeira = [
     
-    { id_sala: 1, id_cadeira: 23},
-    { id_sala: 1, id_cadeira: 24},
-    { id_sala: 2, id_cadeira: 25},
-    { id_sala: 3, id_cadeira: 36},
-    { id_sala: 4, id_cadeira: 47},
-  ]
+  //   { id_sala: 1, id_cadeira: 23},
+  //   { id_sala: 1, id_cadeira: 24},
+  //   { id_sala: 2, id_cadeira: 25},
+  //   { id_sala: 3, id_cadeira: 36},
+  //   { id_sala: 4, id_cadeira: 47},
+  // ]
   
   lanchinho = [
     

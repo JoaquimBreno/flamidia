@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Routes} from 'react-router-dom';
 import Form from './pages/form/Form';
 import Payment from './pages/payment/Payment';
+import Register from './pages/register/Register';
 import './App.css';
 import PrivateRoute from "./pages/PrivateRoute";
 import { Row, Col } from 'react-bootstrap';
@@ -15,7 +16,10 @@ class App extends Component {
     <div className='desktop-body'>
         <div className='header'>
           <Routes>
-            <Route path="/" element={<Form />} />
+            <Route path="/" element={<Register/>}></Route>
+            <Route path="/form" element={<PrivateRoute/>}>
+              <Route path="" element={<Form/>} />
+            </Route>
             <Route path="/payment" element={<PrivateRoute/>}>
               <Route path="" element={<Payment/>} />
             </Route>

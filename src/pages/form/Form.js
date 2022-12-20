@@ -3,7 +3,6 @@ import Container from 'react-bootstrap/Container';
 import '../../styles/pages/Form.css';
 import { Dropdown, Button, Row, Col } from 'react-bootstrap';
 import { login, logout, isLogin } from '../../utils';
-import footerlogo  from '../../assets/footer_logo.png';
 import axios from 'axios';
 class Form extends Component {
   constructor(props) {
@@ -11,6 +10,7 @@ class Form extends Component {
     this.state = {
       movies: [],
       session: [],
+      chairs: [],
       isLogin: isLogin(),
       movieReg: "undefined",
       lancheReg:"undefined",
@@ -44,7 +44,7 @@ class Form extends Component {
     this.setState((prevState) => ({ 
       ...prevState,
         movieReg: this.state.movies.find((movie) => Number(movie.id_filme) === Number(e)).id_filme, 
-        sessionDateReg: this.session.filter(session => {return Number(session.id_filme) === Number(e);})
+        sessionDateReg: this.state.session.filter(session => {return Number(session.id_filme) === Number(e);})
       })
     );
 
@@ -66,21 +66,22 @@ class Form extends Component {
       {
         ...prevState,
         hour:e,
-        sessionDateReg: prevState.sessionDateReg.filter(session => {return Number(session.horario) === Number(e);})
+        sessionDateReg: this.state.session.filter(session => {return session.hora_inicio === e})
       }
     ));
   }
 
   handleRoom = (e) => {
     // find dictionary into movies with id = e and return the id
+    this.mountCadeiras(e)
     this.setState((prevState) => (
       {
         ...prevState,
         room:e,
-        sessionDateReg: prevState.sessionDateReg.filter(session => {return Number(session.id_sala) === Number(e);}),
-        sessionRoomReg: this.session.filter(session => {return Number(session.id_sala) === Number(e);})
+        sessionDateReg: prevState.sessionDateReg.filter(session => {return Number(session.id_sala) === Number(e);})
       }
     ));
+    
   }
 
   handleChair = (e) => {
@@ -89,9 +90,10 @@ class Form extends Component {
       {
         ...prevState,
         chair:e,
-        sessionRoomReg: this.session.filter(session => {return Number(session.id_cadeira) === Number(e)})
+        sessionRoomReg: this.state.session.filter(session => {return Number(session.id_cadeira) === Number(e)})
       }
     ));
+    console.log(this.state)
   }
 
   handleLanche= (e) => {
@@ -157,7 +159,6 @@ class Form extends Component {
 
   componentDidMount() {
     this.mountMovies();
-    this.mountSessao();
   }
 
   mountMovies() {
@@ -172,7 +173,7 @@ class Form extends Component {
   }
 
   mountSessao(){
-    axios.get('https://flaapimidia.herokuapp.com/sessao/')
+    axios.get('https://flaapimidia.herokuapp.com/sessao')
     .then(response => {
       console.log(response.data.result);
       this.setState({ session: response.data.result });
@@ -184,10 +185,21 @@ class Form extends Component {
 
   mountSessaoById(idFilme) {
     console.log(idFilme);
-    axios.get('https://flaapimidia.herokuapp.com/sessao/id/sessao/'+idFilme)
+    axios.get('https://flaapimidia.herokuapp.com/sessao/id/'+idFilme)
     .then(response => {
       console.log(response.data.result);
       this.setState({ session: response.data.result });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
+
+  mountCadeiras(idSala){
+    axios.get('https://flaapimidia.herokuapp.com/cadeira/id/'+ idSala)
+    .then(response => {
+      console.log(response.data.result);
+      this.setState({ chairs: response.data.result });
     })
     .catch(error => {
       console.error(error);
@@ -296,7 +308,7 @@ class Form extends Component {
           null
         }
 
-        {/* HORINHA 
+        {/* HORINHA  */}
         {this.state.date!=="undefined"? 
           <Row className='justify-content-center mt-5 text-center'>
             <Col md="2" className='align-self-center label'>
@@ -308,8 +320,8 @@ class Form extends Component {
                   {this.getHour() === "undefined" ? "Escolhe a horinha": this.getHour()} 
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  {this.session.filter(ses => ses.data === this.state.date).map((session) => (
-                      <Dropdown.Item eventKey={session.horario} key={session.horario} >{session.horario}</Dropdown.Item>
+                  {this.state.session.filter(ses => ses.data === this.state.date).map((session) => (
+                      <Dropdown.Item eventKey={session.hora_inicio} key={session.hora_inicio} >{session.hora_inicio}</Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
@@ -317,10 +329,10 @@ class Form extends Component {
           </Row>       
         :
           <div hidden></div>
-        } */}
+        }
 
         {/* SALINHA */}
-        {/* {this.state.hour!=="undefined"?
+        {this.state.hour!=="undefined"?
           <Row className='justify-content-center mt-5 text-center'>
             <Col md="2" className='align-self-center label'>
                 salinha?
@@ -331,7 +343,7 @@ class Form extends Component {
                   {this.getRoom() === "undefined" ? "Escolhe a salinha": this.getRoom()} 
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  {this.session.filter(ses => ses.horario === this.state.hour).map((session) => (
+                  {this.state.session.filter(ses => ses.hora_inicio === this.state.hour).map((session) => (
                       <Dropdown.Item eventKey={session.id_sala} key={session.id_sala} >{session.id_sala}</Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
@@ -340,10 +352,10 @@ class Form extends Component {
           </Row>       
         :
           <div hidden></div>
-        } */}
+        }
 
         {/* CADEIRINHA */}
-        {/* {this.state.room!=="undefined"?
+        {this.state.chairs.length?
           <Row className='justify-content-center mt-5 text-center'>
             <Col md="2" className='align-self-center label'>
                 cadeirinha?
@@ -354,7 +366,7 @@ class Form extends Component {
                   {this.getChair() === "undefined" ? "Escolhe a cadeirinha": this.getChair()} 
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  {this.cadeira.filter(cad => Number(cad.id_sala) === Number(this.state.room)).map((cadeira) => (
+                  {this.state.chairs.filter(cad => Number(cad.id_sala) === Number(this.state.room)).map((cadeira) => (
                       <Dropdown.Item eventKey={cadeira.id_cadeira} key={cadeira.id_cadeira} >{cadeira.id_cadeira}</Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
@@ -363,7 +375,7 @@ class Form extends Component {
           </Row>       
         :
           <div hidden></div>
-        } */}
+        }
 
         {/* LANCHINHO */} 
         {/* {this.state.chair!=="undefined"?
@@ -388,10 +400,6 @@ class Form extends Component {
         <div hidden></div>
         } */}
 
-
-      </div>
-
-      <footer className='fixar-rodape mt-5'>
         <Row className='justify-content-center mt-5 text-center'>
           <Col md='auto'>
             <div>
@@ -402,13 +410,8 @@ class Form extends Component {
             </div>
           </Col>
         </Row>
+      </div>
 
-        <Row className='justify-content-center footer mt-5 text-center'>
-          <Col md='auto'>
-            <img src={footerlogo} alt='footer_logo'></img>
-          </Col>
-        </Row>
-      </footer>
     </Container>
 
   );

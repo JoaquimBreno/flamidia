@@ -14,12 +14,6 @@ footer{
     margin-top: 20px;
 }
 
-footer.fixar-rodape{
-    bottom: 20px;
-    left: 0;
-    position: fixed;
-    width: 100%;
-  }
 
 .text-center{
     display: flex;

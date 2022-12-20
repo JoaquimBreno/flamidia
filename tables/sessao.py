@@ -20,7 +20,7 @@ def get_db():
         db.close()
 
 
-@router.post("/sessao/create")
+@router.post("/create")
 async def create_sessao_service(request: RequestSessao, db: Session = Depends(get_db)):
     crud.create_sessao(db, sessao=request.parameter)
     return Response(status="Ok",
@@ -28,7 +28,12 @@ async def create_sessao_service(request: RequestSessao, db: Session = Depends(ge
                     message="Sessao created successfully").dict(exclude_none=True)
 
 
-@router.get("/id/sessao/{id_filme}")
+@router.get("/id/{id_filme}")
 async def get_sessao_by_id_filme(id_filme: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     _sessao = crud.get_sessao_by_id_filme(db, id_filme, skip, limit)
+    return Response(status="Ok", code="200", message="Success fetch all data", result=_sessao)
+
+@router.get("/")
+async def get_all_sessao(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    _sessao = crud.get_all_sessao(db, skip, limit)
     return Response(status="Ok", code="200", message="Success fetch all data", result=_sessao)

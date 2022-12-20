@@ -91,7 +91,7 @@ class PaymentComponent extends Component {
             this.setState({cliente: values});
             this.mountClientes(values)
             // aqui você pode enviar os valores do formulário para a API ou fazer qualquer outra coisa
-            // this.handleLogin()
+            this.handleLogin()
           }}
         >
           {({ isSubmitting }) => (

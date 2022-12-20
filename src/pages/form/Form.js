@@ -8,7 +8,8 @@ class Form extends Component {
   constructor(props) {
     super(props);
     logout();
-    this.state = {
+    this.state = JSON.parse(window.localStorage.getItem('state')) || {
+      cliente: [],
       movies: [],
       session: [],
       chairs: [],

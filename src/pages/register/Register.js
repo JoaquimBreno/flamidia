@@ -5,6 +5,7 @@ import { Formik, ErrorMessage, Form, Field, useFormikContext} from 'formik';
 import * as Yup from 'yup';
 import {Button, FormGroup, Row, Col} from 'react-bootstrap';
 import { login, logout, isLogin } from '../../utils';
+import axios from 'axios';
 
 function Payment() {
   const [formik] = useState(useFormikContext());
@@ -19,7 +20,18 @@ class PaymentComponent extends Component {
     super();
     this.state = {
       isLogin: isLogin(),
-      cliente: []
+      cliente: [],
+      movies: [],
+      session: [],
+      chairs: [],
+      movieReg: "undefined",
+      lancheReg:"undefined",
+      sessionDateReg: "undefined",
+      date: "undefined",
+      hour:"undefined",
+      room:"undefined",
+      chair:"undefined",
+      sessionRoomReg: "undefined",
     }
     this.formik = this.props;
     this.saveState = this.saveState.bind(this);
@@ -34,9 +46,24 @@ class PaymentComponent extends Component {
   }
 
   handleLogin = () => {
+    console.log(this.state)
     this.saveState({...this.state});
     login();
     window.location.assign("/form");
+  }
+
+  mountClientes(cliente) {
+    const body = {
+      "parameters":{}
+    }
+    body.parameters=cliente
+    axios.post(body,'https://flaapimidia.herokuapp.com/cliente/create')
+    .then(response => {
+      console.log(response.data.result);
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
   render() {
@@ -61,10 +88,11 @@ class PaymentComponent extends Component {
           validationSchema={FormSchema}
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(false);
-            console.log(values)
-            this.setState({cliente: values});
-            // aqui você pode enviar os valores do formulário para a API ou fazer qualquer outra coisa
             
+            this.setState({cliente: values});
+            
+            // aqui você pode enviar os valores do formulário para a API ou fazer qualquer outra coisa
+            // this.handleLogin()
           }}
         >
           {({ isSubmitting }) => (
@@ -81,7 +109,7 @@ class PaymentComponent extends Component {
                 <Field name="flamengo" type="checkbox" /> Flamengo
                 <Field name="estudante" type="checkbox" /> Estudante
               </FormGroup>
-              <Button className='justify-content-center mt-5 text-center' type="submit" onClick={() => this.handleLogin()} disabled={isSubmitting}>
+              <Button className='justify-content-center mt-5 text-center' type="submit" disabled={isSubmitting}>
                 Enviar
               </Button>
             </Form>

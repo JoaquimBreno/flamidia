@@ -4,7 +4,7 @@ import '../../styles/pages/Form.css';
 import { Dropdown, Button, Row, Col } from 'react-bootstrap';
 import { login, logout, isLogin } from '../../utils';
 import footerlogo  from '../../assets/footer_logo.png';
-import ApiService from '../Service';
+import axios from 'axios';
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -38,9 +38,10 @@ class Form extends Component {
 
   handleMovies = (e) => {
     // find dictionary into movies with id = e and return the id
+    console.log(e)
     this.setState((prevState) => ({ 
       ...prevState,
-        movieReg: this.movies.find((movie) => Number(movie.id) === Number(e)).id, 
+        movieReg: this.state.movies.find((movie) => Number(movie.id_filme) === Number(e)).id_filme, 
         sessionDateReg: this.session.filter(session => {return Number(session.id_filme) === Number(e);})
       })
     );
@@ -138,7 +139,7 @@ class Form extends Component {
   }
 
   movieFinder = () => {
-    const movieFound = this.movies.find((movie) => Number(movie.id) === Number(this.state.movieReg));
+    const movieFound = this.state.movies.find((movie) => Number(movie.id_filme) === Number(this.state.movieReg));
 
     return movieFound;
   }
@@ -148,20 +149,36 @@ class Form extends Component {
    * 
    */
 
-  mountMovies(){
-    ApiService.getMovie()
-      .then(res => {
-        const movies = res.data;
-        console.log(movies);
-        this.movies = movies;
-      })
+  componentDidMount() {
+    this.mountMovies();
   }
 
+  mountMovies() {
+    axios.get('https://flaapimidia.herokuapp.com/filme/')
+    .then(response => {
+      console.log(response.data.result);
+      this.setState({ movies: response.data.result });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
+
+  mountSessao() {
+    axios.get('https://flaapimidia.herokuapp.com/filme/')
+    .then(response => {
+      console.log(response.data.result);
+      this.setState({ movies: response.data.result });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
   /**
    * 
    * 
    */
-  movies = []
+
   /**movies = [
     
      { label: "Crepusculo1", id: 1, ator: "Robert Pattinson", ano: 2008, genero: "Romance", nacionalidade: "EUA", idade:"18"},
@@ -174,7 +191,7 @@ class Form extends Component {
     { id: 10,id_filme: 1, horario: "14:00", data: "2021-05-01", id_sala: "1"},
     { id: 20,id_filme: 2, horario: "15:00", data: "2021-05-02", id_sala: "2"},
     { id: 30,id_filme: 3, horario: "16:00", data: "2021-05-03", id_sala: "3"},
-    { id: 30,id_filme: 3, horario: "16:00", data: "2021-05-03", id_sala: "4"},
+    { id: 30,id_filme: 96, horario: "16:00", data: "2021-05-03", id_sala: "4"},
   ]
 
   cadeira = [
@@ -193,7 +210,7 @@ class Form extends Component {
   ]
 
   render() {
-    this.mountMovies();
+
     let results;
     if (this.getMovie()==="undefined") {
       results =         
@@ -203,9 +220,9 @@ class Form extends Component {
         results = <Row className='justify-content-md-center mt-4'>
         {Object.keys(movie).map(function(key,index) {
           return (
-            <Col key={key} xs lg="2" className={`align-self-center label_filme text-center ${key==="id" ? "invisible" : ""}`}>
-              {movie[key]}
-            </Col>
+            <Row key={key} xs lg="2" className={`align-self-center label_filme text-center ${key==="id_filme" ? "invisible" : ""}`}>
+              {key==="img_filme" ? <img src={movie[key]} alt="img" className="img-fluid"/> : movie[key]}
+            </Row>
           )
         })}
        </Row>
@@ -223,11 +240,11 @@ class Form extends Component {
           <Col md='auto'>
             <Dropdown onSelect= {this.handleMovies} >
               <Dropdown.Toggle id="dropdown-basic" title="Dropdown button">
-                {this.getMovie() === "undefined"? "Escolha o filme": this.movieFinder().label} 
+                {this.getMovie() === "undefined"? "Escolha o filme": this.movieFinder().nome_filme} 
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                {this.movies.map((movie) => (
-                    <Dropdown.Item eventKey={movie.id} key={movie.id} >{movie.label}</Dropdown.Item>
+                {this.state.movies.map((movie) => (
+                    <Dropdown.Item eventKey={movie.id_filme} key={movie.id_filme} >{movie.nome_filme}</Dropdown.Item>
                 ))}
               </Dropdown.Menu>
             </Dropdown>

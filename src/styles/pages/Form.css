@@ -33,6 +33,9 @@ footer.fixar-rodape{
     color: #fff;
 }
 
+.img-fluid{
+    width:  20%!important;
+}
 
 .form{
     margin-top: 100px;
